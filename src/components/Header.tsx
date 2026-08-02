@@ -16,12 +16,12 @@ export function Header() {
           <NavLink to="/actions/token"><span>01</span><b>Token Launch</b><small>Live</small></NavLink>
           <NavLink to="/actions/nfts"><span>02</span><b>NFTs</b><small>In development</small></NavLink>
           <NavLink to="/actions/agentz"><span>03</span><b>Agentz</b><small>In development</small></NavLink>
+          <a href="https://odyvion.vercel.app" target="_blank" rel="noreferrer"><span>04</span><b>Odyvion</b><small>GameFi · Live ↗</small></a>
         </div>
       </div>
       <NavLink className={navClass} to="/docs">Docs</NavLink>
       <NavLink className={navClass} to="/about">About</NavLink>
       <NavLink className={navClass} to="/updates">Updates</NavLink>
-      <a className="odyvion-link" href="https://odyvion.vercel.app" target="_blank" rel="noreferrer">Odyvion <span>↗</span></a>
     </nav>
     <div className="header-wallet"><WalletButton /></div>
   </header>

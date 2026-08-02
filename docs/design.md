@@ -6,13 +6,12 @@
 
 ## Product structure
 
-The interface treats Odynitive as one platform with three product realms:
+The interface treats Odynitive as one platform with four product realms:
 
 1. **Token Launch** — live Ritual Testnet launchpad and bonding-curve market.
 2. **NFTs** — frontend-only marketplace concept, explicitly labelled “Still in development progress”.
 3. **Agentz** — frontend-only autonomous trading-agent arena concept, explicitly labelled “Still in development”.
-
-Odyvion remains a separate game and external product. It is linked from the primary navigation because it belongs to the same creative Aegean world, but Odynitive does not merge the game into the launchpad.
+4. **Odyvion** — the GameFi realm of Odynitive. An Aegean adventure game with on-chain items and its own token market, already live and playable as its own app at odyvion.vercel.app. It is part of the Odynitive product lineup; the game itself runs in a separate app.
 
 ## Navigation
 
@@ -23,10 +22,10 @@ Primary navigation:
   - Token Launch / Live
   - NFTs / In development
   - Agentz / In development
+  - Odyvion / GameFi · Live (opens the game app)
 - Docs
 - About
 - Updates
-- Odyvion ↗
 - Connect wallet
 
 The previous “Explorer” navigation item was removed. Ritual Explorer is now used only as a contextual external link from transactions and contract documentation.
