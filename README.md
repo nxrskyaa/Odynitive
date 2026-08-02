@@ -4,6 +4,7 @@ A restrained token launchpad for [Ritual Chain](https://ritualfoundation.org): l
 
 ## Live deployment
 
+- **App:** [odynitive.vercel.app](https://odynitive.vercel.app)
 - **Network:** Ritual testnet (`1979`)
 - **Factory:** [`0xcE90B3b816741EEf0B67C0dA5c81288eCc000D37`](https://explorer.ritualfoundation.org/address/0xcE90B3b816741EEf0B67C0dA5c81288eCc000D37)
 - **Deployment transaction:** [`0x1a1d5f5b7e69196d5d36ab8c65f6b74d12ae2ef2335f2d8bf7549c6edd5972f9`](https://explorer.ritualfoundation.org/tx/0x1a1d5f5b7e69196d5d36ab8c65f6b74d12ae2ef2335f2d8bf7549c6edd5972f9)
