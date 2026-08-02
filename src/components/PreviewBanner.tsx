@@ -1,0 +1,1 @@
+export function PreviewBanner() { return <aside className="preview-banner" role="status"><span className="status-dot" /> <strong>Preview mode</strong><span>Sample markets are on display. Set <code>VITE_FACTORY_ADDRESS</code> to enable live launches and trades.</span></aside> }

@@ -1,0 +1,4 @@
+export function LoadingCards() { return <div className="token-grid" aria-label="Loading markets" aria-busy="true">{[1,2,3].map(x=><div className="skeleton token-card" key={x}/>)}</div> }
+export function EmptyState({ title='No markets found', body='Try another search, or launch the first token in this current.' }: { title?:string; body?:string }) { return <div className="empty-state"><span className="ornament">✦</span><h3>{title}</h3><p>{body}</p></div> }
+export function LoadingState() { return <div className="loading-state" aria-live="polite"><div className="loading-mark"/><p>Reading Ritual…</p></div> }
+export function ErrorState({ onRetry }: { onRetry: () => void }) { return <div className="error-state"><span className="ornament">◇</span><h3>The chain stayed quiet</h3><p>We could not read the market just now.</p><button className="button ghost" onClick={onRetry}>Try again</button></div> }
