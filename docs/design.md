@@ -1,123 +1,68 @@
-# Odynitive — Design Specification
+# Odynitive — Design Record
 
-**Date:** 2026-08-02
+**Status:** Implemented revision
+**Product name:** Odynitive
+**Design direction:** Aegean editorial utility — marble grid, ink, bronze, lapis, oversized serif type, compact mono metadata.
 
-## Product
-Odynitive is a Ritual-native token launchpad that makes launching and trading a testnet token feel like one clean action, not a dashboard. The product has three core surfaces: discover, launch, and token detail/trade.
+## Product structure
 
-## Chosen approach
+The interface treats Odynitive as one platform with three product realms:
 
-### Considered
-1. **Fixed-price sale** — simplest contract and UI, but weak price discovery and no sell path.
-2. **Virtual-reserve bonding curve** — still compact, supports buy/sell immediately, and creates an understandable live market without depending on an unverified DEX deployment.
-3. **DEX-first launch + LP migration** — most market-like, but depends on canonical router/factory availability and creates operational complexity unsuitable for a first Ritual testnet release.
+1. **Token Launch** — live Ritual Testnet launchpad and bonding-curve market.
+2. **NFTs** — frontend-only marketplace concept, explicitly labelled “Still in development progress”.
+3. **Agentz** — frontend-only autonomous trading-agent arena concept, explicitly labelled “Still in development”.
 
-### Decision
-Use a **virtual-reserve constant-product curve**. Each token has a deterministic market owned by the factory. The curve begins with virtual RITUAL and virtual token reserves, and real RITUAL accumulates as users buy. Users can sell purchased tokens back while the pool remains solvent.
+Odyvion remains a separate game and external product. It is linked from the primary navigation because it belongs to the same creative Aegean world, but Odynitive does not merge the game into the launchpad.
 
-## Contract architecture
+## Navigation
 
-A single Remix-friendly Solidity file contains:
-- `OdynitiveToken`: fixed-supply ERC-20 with metadata URI and factory-controlled initial mint.
-- `OdynitiveFactory`: launches tokens, stores market metadata, quotes trades, executes buys/sells, accrues protocol and creator fees, and exposes pagination-friendly getters.
-- Minimal internal ERC-20 and reentrancy guard implementations to avoid Remix import resolution.
+Primary navigation:
 
-### Initial parameters
-- Supply: 1,000,000,000 tokens (18 decimals).
-- Virtual RITUAL reserve: 10,000 RITUAL.
-- Virtual token reserve: full token supply.
-- Protocol fee: 100 bps (1%).
-- Creator fee: 50 bps (0.5%).
-- No launch fee on testnet.
-- Minimum output protects both buy and sell from slippage.
+- Discover
+- Actions
+  - Token Launch / Live
+  - NFTs / In development
+  - Agentz / In development
+- Docs
+- About
+- Updates
+- Odyvion ↗
+- Connect wallet
 
-### Lifecycle
-1. Creator submits name, symbol, description, image URI, website, and social link.
-2. Factory deploys token and escrows all supply.
-3. Buyers send RITUAL; fees are separated; net amount moves the virtual-reserve curve and tokens transfer to buyer.
-4. Sellers approve the factory, then return tokens; curve calculates RITUAL output and pays from real pool balance.
-5. Protocol and creator fees are pull-withdrawn, not pushed during trades.
+The previous “Explorer” navigation item was removed. Ritual Explorer is now used only as a contextual external link from transactions and contract documentation.
 
-### Security model
-- Checks-effects-interactions and a reentrancy guard on value-moving functions.
-- Bounded fee configuration and owner-only protocol controls.
-- Pull payments for fees.
-- Input validation for metadata length, amount, market existence, and slippage.
-- Exact integer quote functions are shared with execution logic.
-- No upgradeability, hidden mint, blacklist, transfer tax, or privileged market seizure.
-- `BUILDER = "nxrskyaa"` and immutable `BUILDER_ADDRESS` establish proof of building.
+## UX decisions
 
-## Ritual projection
+- Product status is visible before feature content or controls.
+- Actions use a large, persistent three-tab rail instead of hidden standalone routes.
+- Indonesian and English tabs appear on every explanatory area where product mechanics or status require prose.
+- The homepage has interactive product tabs so users can understand what is live and what is being developed before entering a feature.
+- Disabled concept controls use explicit “Coming soon” wording and never imply a transaction can be sent.
+- Docs disclose fixed parameters, mutable owner controls, fees, slippage, reserve behavior, and testnet status in plain language.
 
-**Mapped capabilities**
-- ERC-20 issuance and deterministic AMM math → standard EVM contracts on Ritual.
-- Native RITUAL payments → standard payable EVM functions.
-- Wallet connection and reads → off-chain React UI with wagmi/viem.
-- Image hosting → off-chain URI supplied by token creator.
+## Agentz concept
 
-**Precompiles:** none. The product does not need HTTP, AI inference, scheduling, encrypted secrets, or long-running computation. Avoiding unnecessary precompiles removes async sender-lock and RitualWallet fee-deposit complexity.
+The concept adapts the no-code arena flow shown in the supplied Agent Arena reference:
 
-**Reference contracts:** registry examples use Scheduler/HTTP/Secrets and do not overlap this deterministic launchpad.
+- choose an archetype;
+- tune risk and trading frequency;
+- preview a strategy identity;
+- enter a qualifying phase;
+- advance to a head-to-head bracket;
+- determine a last agent standing.
 
-## Frontend architecture
+The planned Ritual architecture is described as market context → Ritual LLM inference at `0x0802` → TEE executor → settled result. It is labelled as a target architecture, not a running backend.
 
-- Vite + React + TypeScript.
-- wagmi v2 + viem + TanStack Query.
-- React Router routes: `/`, `/launch`, `/token/:address`.
-- `VITE_FACTORY_ADDRESS` controls live contract mode.
-- If absent, the discover UI shows explicit preview listings; wallet writes remain disabled and explain how to configure the contract.
-- Reads poll conservatively and refetch after confirmed writes.
+## Responsive behavior
 
-### Discover
-- Compact sticky header, wordmark, Ritual status, wallet button.
-- Hero with one clear promise and two actions: Launch token / Explore tokens.
-- Search and newest/activity filters.
-- Token cards show image, symbol, price, pooled RITUAL, progress, creator, and activity.
-- A small “How it works” strip replaces a dashboard.
+Desktop uses full editorial grids and multi-column comparison layouts. At tablet width, navigation moves into a horizontal second row. At mobile width, tabs become horizontally scrollable, product cards and information grids collapse to one column, sticky side panels become static, and all primary actions become full-width or stack vertically.
 
-### Launch
-- One progressive form on a single page.
-- Immediate token-card preview beside the form.
-- Clear constraints, fee summary, network state, and one final launch button.
-- Transaction state: waiting for wallet → submitted → confirmed → direct link to token.
+## Verification
 
-### Token detail
-- Token identity and links on top.
-- Price/liquidity stats and lightweight curve visualization.
-- Buy/sell panel with tabs, balance shortcut, quote, fee disclosure, slippage, and explicit approval state.
-- Recent on-chain activity list when factory is configured.
-
-## Visual system
-
-### Principles
-- Pure Alpha restraint: generous negative space, quiet borders, crisp hierarchy, subtle motion.
-- Odyvion materiality: warm marble, ink, aged gold, bronze, lapis, terracotta.
-- Pixel art appears as a logo/ornament and 1px stepped corners—not as an arcade HUD.
-
-### Tokens
-- Ink: `#231E15`
-- Marble: `#F8F3E7`
-- Gold: `#B39350`
-- Antique gold: `#8E6D10`
-- Lapis: `#1F5B93`
-- Terracotta: `#9B3324`
-- Ivory: `#F5EDD9`
-
-Typography uses a refined serif display face plus a clean grotesk body; `Silkscreen` is limited to micro-labels. Motion is 160–260ms, transform/opacity only, with full `prefers-reduced-motion` support.
-
-## Error handling
-- Human-readable wallet rejection, wrong-network, insufficient balance, allowance, slippage, and RPC errors.
-- Empty and loading states preserve layout.
-- Writes never run when factory address is unset or invalid.
-- Explorer links appear for every confirmed transaction and configured contract.
-
-## Accessibility and responsive behavior
-- WCAG-aware contrast, visible focus, semantic labels, keyboard-operable tabs/dialogs.
-- Touch targets at least 44px.
-- Desktop two-column token/form layouts collapse to one column; trade panel becomes inline rather than sticky on mobile.
-- Decorative textures are ignored by assistive tech.
-
-## Deployment
-- Smart contract: user deploys `contracts/OdynitiveLaunchpad.sol` in Remix with Solidity 0.8.24, optimizer enabled, constructor treasury address, on Ritual chain ID 1979.
-- Frontend: Vercel static Vite deployment.
-- After contract deployment, set `VITE_FACTORY_ADDRESS` and redeploy.
+- ESLint
+- TypeScript project build
+- Vitest suite
+- Vite production build
+- Desktop browser inspection of Discover, Agentz, Docs, and NFT pages
+- Interaction checks for language tabs, NFT activity tabs, and Agentz controls
+- Browser console checked for JavaScript errors
