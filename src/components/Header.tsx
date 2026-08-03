@@ -10,6 +10,7 @@ export function Header() {
     <BrandMark />
     <nav className="primary-nav" aria-label="Primary navigation">
       <NavLink className={navClass} to="/">Discover</NavLink>
+      <NavLink className={navClass} to="/markets">Markets</NavLink>
       <div className="nav-group">
         <NavLink className={({ isActive }) => isActive ? 'active action-trigger' : 'action-trigger'} to="/actions/token">Actions <span>⌄</span></NavLink>
         <div className="nav-popover" aria-label="Action menu">

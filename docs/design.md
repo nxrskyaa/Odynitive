@@ -18,6 +18,7 @@ The interface treats Odynitive as one platform with four product realms:
 Primary navigation:
 
 - Discover
+- Markets — dedicated live token board with Top volume / Newest / Most active sorting, search, and rank badges
 - Actions
   - Token Launch / Live
   - NFTs / In development
@@ -29,6 +30,10 @@ Primary navigation:
 - Connect wallet
 
 The previous “Explorer” navigation item was removed. Ritual Explorer is now used only as a contextual external link from transactions and contract documentation.
+
+## Token detail
+
+Each token page shows price, pooled RITUAL, volume, trade count, curve chart, provenance, and a **Top holders** table read on-chain from the token's ERC-20 `Transfer` logs (last ~95k blocks, top 8 wallets by balance, share of circulating supply).
 
 ## UX decisions
 

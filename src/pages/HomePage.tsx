@@ -1,17 +1,10 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { TokenCard } from '../components/TokenCard'
-import { EmptyState, ErrorState, LoadingCards } from '../components/States'
 import { BilingualSection, LanguageTabs, type Language } from '../components/LanguageTabs'
-import { useMarkets } from '../hooks/useMarkets'
 
 export function HomePage() {
-  const [query, setQuery] = useState('')
-  const [sort, setSort] = useState<'new'|'active'>('new')
   const [lang, setLang] = useState<Language>('id')
   const [experience, setExperience] = useState<'tokens'|'nfts'|'agentz'|'odyvion'>('tokens')
-  const { data: markets, isLoading, isError, refetch } = useMarkets()
-  const shown = useMemo(() => markets.filter(m => `${m.name} ${m.symbol}`.toLowerCase().includes(query.toLowerCase())).sort((a,b) => sort==='new' ? Number(b.createdAt-a.createdAt) : Number(b.tradeCount-a.tradeCount)), [markets, query, sort])
   return <>
     <section className="home-hero shell">
       <div className="hero-copy"><div className="network-line"><span className="status-dot"/>RITUAL TESTNET / CHAIN 1979</div><h1>Where ideas become<br/><em>on-chain worlds.</em></h1><p>Launch tokens today. Explore NFTs, autonomous Agentz, and the Odyvion GameFi realm.</p><div className="hero-actions"><Link className="button primary" to="/actions/token">Launch a token <span>↗</span></Link><Link className="button ghost" to="/docs">Understand the system</Link></div></div>
@@ -26,7 +19,7 @@ export function HomePage() {
         <button className={experience==='odyvion'?'active':''} onClick={()=>setExperience('odyvion')}><span>04</span><div><b>Odyvion</b><small>GameFi · Live</small></div></button>
       </div>
       <div className={`experience-panel ${experience}`}>
-        {experience==='tokens' && <><div><span className="kicker">AVAILABLE NOW</span><h2>Create a market in one transaction.</h2><p>Fixed supply, immediate price discovery, and transparent on-chain quotes. No code required.</p></div><div className="panel-metric"><span>SUPPLY MODEL</span><b>1,000,000,000</b><small>Fixed per token</small></div><Link className="text-link" to="/actions/token">Open token launch →</Link></>}
+        {experience==='tokens' && <><div><span className="kicker">AVAILABLE NOW</span><h2>Create a market in one transaction.</h2><p>Fixed supply, immediate price discovery, and transparent on-chain quotes. No code required.</p></div><div className="panel-metric"><span>SUPPLY MODEL</span><b>1,000,000,000</b><small>Fixed per token</small></div><div className="panel-links"><Link className="text-link" to="/actions/token">Open token launch →</Link><Link className="text-link" to="/markets">Browse live markets →</Link></div></>}
         {experience==='nfts' && <><div><span className="kicker">CONCEPT FRONTEND</span><h2>Collect, list, and discover Aegean artifacts.</h2><p>Preview the collection marketplace and activity experience currently in development.</p></div><div className="mini-art"><i>Ω</i><span>COMING SOON</span></div><Link className="text-link" to="/actions/nfts">Preview NFT Marketplace →</Link></>}
         {experience==='agentz' && <><div><span className="kicker">CONCEPT FRONTEND</span><h2>Configure an agent. Enter the arena.</h2><p>A no-code autonomous trading competition planned around Ritual inference.</p></div><div className="mini-agent"><span>Δ</span><i>VS</i><span>◎</span></div><Link className="text-link" to="/actions/agentz">Preview Agentz →</Link></>}
         {experience==='odyvion' && <><div><span className="kicker">GAMEFI · LIVE</span><h2>Enter the Aegean realm.</h2><p>Odyvion is the GameFi realm of Odynitive—an Aegean adventure game with on-chain items and its own token market, already playable.</p></div><div className="mini-art"><i>Ο</i><span>PLAYABLE NOW</span></div><a className="text-link" href="https://odyvion.vercel.app" target="_blank" rel="noreferrer">Play Odyvion ↗</a></>}
@@ -40,9 +33,7 @@ export function HomePage() {
       <Link className="inline-doc-link" to="/docs"><b>Read the full mechanism</b><span>Fees, formula, owner controls, liquidity, and transaction flow →</span></Link>
     </section>
 
-    <section className="market-section shell"><div className="section-heading market-heading"><div><span className="kicker">LIVE TOKEN MARKETS</span><h2>Discover what is moving.</h2></div><div className="market-controls"><label><span>Search</span><input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Name or ticker" /></label><div className="sort-tabs"><button className={sort==='new'?'active':''} onClick={()=>setSort('new')}>Newest</button><button className={sort==='active'?'active':''} onClick={()=>setSort('active')}>Most active</button></div></div></div>
-      {isLoading ? <LoadingCards /> : isError ? <ErrorState onRetry={() => refetch()} /> : shown.length ? <div className="token-grid">{shown.map(m=><TokenCard market={m} key={m.token}/>)}</div> : <EmptyState />}
-    </section>
+    <section className="market-teaser shell"><div className="section-heading"><div><span className="kicker">LIVE MARKETS</span><h2>The board is open.</h2></div><Link className="button ghost" to="/markets">All markets →</Link></div><p className="teaser-copy">Every token launched through Odynitive, ranked by volume, activity, and age. The full board lives on its own page.</p></section>
 
     <section className="odyvion-banner"><div className="shell"><div><span className="eyebrow">ODYNITIVE GAMEFI</span><h2>Odyvion: the realm beyond the market.</h2><p>Odyvion is Odynitive's GameFi realm—adventure in the Aegean world with on-chain items and a live token market, playable right now.</p><a className="button primary" href="https://odyvion.vercel.app" target="_blank" rel="noreferrer">Play Odyvion ↗</a></div><div className="realm-mark"><span>Ο</span><i>ODYVION</i></div></div></section>
   </>

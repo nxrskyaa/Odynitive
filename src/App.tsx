@@ -6,6 +6,7 @@ import { LaunchPage } from './pages/LaunchPage'
 import { TokenPage } from './pages/TokenPage'
 import { NftPage } from './pages/NftPage'
 import { AgentzPage } from './pages/AgentzPage'
+import { MarketsPage } from './pages/MarketsPage'
 import { DocsPage } from './pages/DocsPage'
 import { AboutPage } from './pages/AboutPage'
 import { UpdatesPage } from './pages/UpdatesPage'
@@ -18,6 +19,7 @@ function App() {
     <main id="main-content">
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/markets" element={<MarketsPage />} />
         <Route path="/launch" element={<Navigate to="/actions/token" replace />} />
         <Route path="/actions" element={<Navigate to="/actions/token" replace />} />
         <Route path="/actions/token" element={<LaunchPage />} />
