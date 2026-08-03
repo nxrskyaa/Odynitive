@@ -32,20 +32,18 @@ function useHolders(token: Address | undefined, tokensSold: bigint) {
     ;(async () => {
       try {
         const latest = await client.getBlockNumber()
-        // RPC caps getLogs ranges at 100k blocks — scan backwards in chunks,
-        // starting from recent history where most transfers live.
+        // RPC caps getLogs ranges at 100k blocks — scan backwards in chunks.
+        // Tokens launch recently, so if the first chunks are empty, stop fast.
         const CHUNK = 95_000n
-        const MAX_SPAN = 3_000_000n
+        const MAX_CHUNKS = 3
         const logs: Array<{ args: { from?: Address; to?: Address; value?: bigint } }> = []
         let end = latest
-        let scanned = 0n
-        while (end > 0n && scanned < MAX_SPAN && logs.length < 200) {
+        for (let i = 0; i < MAX_CHUNKS && end > 0n; i++) {
           const start = end > CHUNK ? end - CHUNK : 0n
           const chunk = await client.getLogs({ address: token, event: transferEvent, fromBlock: start, toBlock: end }) as Array<{ args: { from?: Address; to?: Address; value?: bigint } }>
           logs.push(...chunk)
           if (start === 0n) break
           end = start - 1n
-          scanned += CHUNK
         }
         // Net balances across all observed transfers (factory contract excluded).
         const balances = new Map<string, bigint>()
